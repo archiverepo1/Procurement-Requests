@@ -22,13 +22,15 @@
     .header h1 { font-size: 1.8rem; margin-bottom: 0.3rem; font-weight: 700; }
     .header p { opacity: 0.9; font-size: 0.95rem; }
     .form-body { padding: 2rem; }
-    .section { margin-bottom: 1.8rem; }
-    .section-title { font-size: 1.1rem; font-weight: 600; color: var(--ufs-primary); border-bottom: 2px solid var(--ufs-secondary); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .section { margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px dashed var(--ufs-border); }
+    .section:last-child { border-bottom: none; }
+    .section-title { font-size: 1.1rem; font-weight: 600; color: var(--ufs-primary); border-bottom: 2px solid var(--ufs-secondary); padding-bottom: 0.4rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
     .row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
     .col { flex: 1; min-width: 220px; }
     label { display: block; font-weight: 500; margin-bottom: 0.3rem; font-size: 0.9rem; }
     input, textarea, select { width: 100%; padding: 0.6rem; border: 1px solid var(--ufs-border); border-radius: 5px; font-size: 0.95rem; transition: all 0.2s; }
     input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ufs-primary); box-shadow: 0 0 0 3px rgba(0,45,98,0.15); }
+    input[type="file"] { padding: 0.3rem; background: #fff; }
     .radio-group { display: flex; gap: 1.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
     .radio-group label { font-weight: normal; display: flex; align-items: center; gap: 0.4rem; cursor: pointer; background: #f9fafb; padding: 0.4rem 0.6rem; border-radius: 4px; }
     .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
@@ -37,8 +39,31 @@
     .item-table input { border: none; background: transparent; padding: 0.3rem; width: 100%; }
     .item-table input:focus { box-shadow: none; border-bottom: 2px solid var(--ufs-primary); }
     .total-row { font-weight: 700; background: #eef2f6; }
-    .signature-pad { border: 1px solid var(--ufs-border); border-radius: 4px; background: #fafafa; touch-action: none; cursor: crosshair; }
-    .btn { padding: 0.65rem 1.2rem; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 0.9rem; }
+    
+    /* Signature Tabs */
+    .sig-tabs { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+    .sig-tab { padding: 0.4rem 0.9rem; border: 1px solid var(--ufs-border); border-radius: 4px 4px 0 0; background: #f9fafb; cursor: pointer; font-size: 0.85rem; }
+    .sig-tab.active { background: var(--ufs-primary); color: #fff; border-color: var(--ufs-primary); font-weight: 500; }
+    .sig-panel { display: none; padding: 1rem; border: 1px solid var(--ufs-border); border-radius: 0 4px 4px 4px; background: #fff; }
+    .sig-panel.active { display: block; }
+    .signature-pad { border: 1px solid var(--ufs-border); border-radius: 4px; background: #fafafa; touch-action: none; cursor: crosshair; width: 100%; max-width: 300px; }
+    
+    /* Attachments */
+    .attachment-zone { border: 2px dashed var(--ufs-border); border-radius: 8px; padding: 1.5rem; text-align: center; background: #fafafa; transition: all 0.2s; cursor: pointer; }
+    .attachment-zone:hover, .attachment-zone.dragover { border-color: var(--ufs-primary); background: #f0f7ff; }
+    .attachment-zone input[type="file"] { display: none; }
+    .attachment-icon { font-size: 2rem; color: var(--ufs-primary); margin-bottom: 0.5rem; }
+    .attachment-hint { font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem; }
+    .attachment-warning { font-size: 0.8rem; color: var(--ufs-error); margin-top: 0.4rem; display: none; }
+    .attachment-list { margin-top: 1rem; }
+    .attachment-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: #fff; border: 1px solid var(--ufs-border); border-radius: 4px; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .attachment-info { display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 0; }
+    .attachment-icon-small { color: var(--ufs-accent); font-size: 1.1rem; }
+    .attachment-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+    .attachment-meta { font-size: 0.8rem; color: #6b7280; margin-left: 0.5rem; }
+    .attachment-remove { background: none; border: none; color: var(--ufs-error); cursor: pointer; font-size: 1.2rem; padding: 0 0.3rem; line-height: 1; }
+    
+    .btn { padding: 0.65rem 1.2rem; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; }
     .btn-primary { background: var(--ufs-primary); color: #fff; }
     .btn-primary:hover { background: #001a3a; transform: translateY(-1px); }
     .btn-secondary { background: var(--ufs-secondary); color: var(--ufs-primary); font-weight: 600; }
@@ -51,13 +76,16 @@
     .status-msg { padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; display: none; font-size: 0.9rem; }
     .status-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .status-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    
     @media print {
       .no-print { display: none !important; }
       body { background: #fff; }
       .container { box-shadow: none; margin: 0; }
       input, textarea, select { border: none; background: transparent; padding: 0; }
-      .signature-pad { border: 1px dashed #999; }
+      .signature-pad, .attachment-zone { display: none; }
+      .sig-preview { display: block !important; border: 1px dashed #999; padding: 0.5rem; margin: 0.3rem 0; }
     }
+    .sig-preview { display: none; max-width: 150px; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -69,9 +97,10 @@
     <div class="form-body">
       <div id="statusMsg" class="status-msg"></div>
       <form id="procurementForm" novalidate>
+        
         <!-- Requisition Details -->
         <div class="section">
-          <div class="section-title">Requisition Details</div>
+          <div class="section-title">📋 Requisition Details</div>
           <div class="row">
             <div class="col"><label for="reqTitle">Requisition Title *</label><input type="text" id="reqTitle" required></div>
             <div class="col"><label for="entityName">Entity Name *</label><input type="text" id="entityName" required></div>
@@ -93,11 +122,11 @@
 
         <!-- Items Table -->
         <div class="section">
-          <div class="section-title">1.2 Description of Goods/Services</div>
+          <div class="section-title">🛒 1.2 Description of Goods/Services</div>
           <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.5rem">Note: This form must be accompanied by a clear written specification.</p>
           <table class="item-table" id="itemsTable">
             <thead>
-              <tr><th style="width:10%">Item No</th><th>Description *</th><th style="width:12%">Qty</th><th style="width:18%">Unit Price (R)</th><th style="width:18%">Line Total (R)</th><th class="no-print" style="width:8%"></th></tr>
+              <tr><th style="width:10%">Item No</th><th>Description *</th><th style="width:12%">Quantity</th><th style="width:18%">Unit Price (R)</th><th style="width:18%">Line Total (R)</th><th class="no-print" style="width:8%"></th></tr>
             </thead>
             <tbody id="itemsBody"></tbody>
             <tfoot>
@@ -113,31 +142,72 @@
 
         <!-- Additional Comments -->
         <div class="section">
-          <div class="section-title">2. Additional Comments</div>
+          <div class="section-title">💬 2. Additional Comments</div>
           <textarea id="comments" rows="2" placeholder="Optional"></textarea>
         </div>
 
-        <!-- Requested By -->
+        <!-- 📎 Attachments Section -->
         <div class="section">
-          <div class="section-title">3. Requested By</div>
+          <div class="section-title">📎 Supporting Documents</div>
+          <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.8rem">Attach quotations, specifications, motivation documents, or other supporting files.</p>
+          
+          <label class="attachment-zone" id="dropZone">
+            <input type="file" id="fileInput" multiple>
+            <div class="attachment-icon">📁</div>
+            <div><strong>Click to upload</strong> or drag & drop files</div>
+            <div class="attachment-hint">PDF, DOC, DOCX, JPG, PNG supported • No file limit (browser may restrict very large files)</div>
+            <div class="attachment-warning" id="largeFileWarning">⚠️ Files >25MB may cause submission issues in some browsers. Consider compressing large documents.</div>
+          </label>
+          
+          <div class="attachment-list" id="attachmentList"></div>
+          <div id="attachmentError" class="error"></div>
+        </div>
+
+        <!-- Requested By with Flexible Signature -->
+        <div class="section">
+          <div class="section-title">✍️ 3. Requested By</div>
           <div class="row">
             <div class="col"><label>Name & Surname *</label><input type="text" id="reqName" required></div>
             <div class="col"><label>Date *</label><input type="date" id="reqDate" required></div>
           </div>
           <div class="row">
             <div class="col">
-              <label>Signature *</label>
-              <canvas class="signature-pad" id="sigRequester" width="300" height="100"></canvas>
-              <div class="row no-print" style="margin-top:0.3rem">
-                <button type="button" class="btn btn-outline" onclick="clearSig('sigRequester')">Clear</button>
+              <label>Signature Method *</label>
+              
+              <!-- Signature Tabs -->
+              <div class="sig-tabs">
+                <div class="sig-tab active" data-target="sig-draw-requester">Draw</div>
+                <div class="sig-tab" data-target="sig-upload-requester">Upload Image</div>
+                <div class="sig-tab" data-target="sig-skip-requester">Digital PDF Later</div>
+              </div>
+              
+              <!-- Draw Panel -->
+              <div id="sig-draw-requester" class="sig-panel active">
+                <canvas class="signature-pad" id="canvas-requester" width="300" height="100"></canvas>
+                <div class="row no-print" style="margin-top:0.5rem">
+                  <button type="button" class="btn btn-outline" onclick="clearSig('canvas-requester')">Clear</button>
+                </div>
+              </div>
+              
+              <!-- Upload Panel -->
+              <div id="sig-upload-requester" class="sig-panel">
+                <input type="file" id="sig-upload-requester" accept="image/*" style="margin-bottom:0.5rem">
+                <img id="sig-preview-requester" class="sig-preview" alt="Signature preview">
+                <p style="font-size:0.8rem;color:#6b7280">Upload a clear PNG/JPG of your signature (max 2MB recommended)</p>
+              </div>
+              
+              <!-- Skip Panel -->
+              <div id="sig-skip-requester" class="sig-panel">
+                <p style="font-size:0.9rem;color:var(--ufs-accent)">✓ This form will be digitally signed in the PDF export or PeopleSoft workflow.</p>
+                <input type="hidden" id="sig-skip-flag-requester" value="true">
               </div>
             </div>
           </div>
         </div>
 
-        <!-- HOD Approval -->
+        <!-- HOD Approval (Same Signature Pattern) -->
         <div class="section">
-          <div class="section-title">4. Supported / Not Supported by Head of Division</div>
+          <div class="section-title">✅ 4. Supported / Not Supported by Head of Division</div>
           <div class="row">
             <div class="col">
               <div class="radio-group">
@@ -152,10 +222,25 @@
           </div>
           <div class="row">
             <div class="col">
-              <label>Signature</label>
-              <canvas class="signature-pad" id="sigHOD" width="300" height="100"></canvas>
-              <div class="row no-print" style="margin-top:0.3rem">
-                <button type="button" class="btn btn-outline" onclick="clearSig('sigHOD')">Clear</button>
+              <label>Signature Method</label>
+              <div class="sig-tabs">
+                <div class="sig-tab active" data-target="sig-draw-hod">Draw</div>
+                <div class="sig-tab" data-target="sig-upload-hod">Upload Image</div>
+                <div class="sig-tab" data-target="sig-skip-hod">Digital PDF Later</div>
+              </div>
+              <div id="sig-draw-hod" class="sig-panel active">
+                <canvas class="signature-pad" id="canvas-hod" width="300" height="100"></canvas>
+                <div class="row no-print" style="margin-top:0.5rem">
+                  <button type="button" class="btn btn-outline" onclick="clearSig('canvas-hod')">Clear</button>
+                </div>
+              </div>
+              <div id="sig-upload-hod" class="sig-panel">
+                <input type="file" id="sig-upload-hod" accept="image/*" style="margin-bottom:0.5rem">
+                <img id="sig-preview-hod" class="sig-preview" alt="Signature preview">
+              </div>
+              <div id="sig-skip-hod" class="sig-panel">
+                <p style="font-size:0.9rem;color:var(--ufs-accent)">✓ Will be signed in PDF/PeopleSoft workflow.</p>
+                <input type="hidden" id="sig-skip-flag-hod" value="true">
               </div>
             </div>
           </div>
@@ -166,7 +251,7 @@
 
         <!-- Budget Confirmation -->
         <div class="section">
-          <div class="section-title">6. Budget Confirmation (LIS Finance & Administration)</div>
+          <div class="section-title">💰 6. Budget Confirmation (LIS Finance & Administration)</div>
           <div class="row">
             <div class="col"><label>Contact Name</label><input type="text" id="budgetContact"></div>
             <div class="col"><label>Tel No</label><input type="tel" id="budgetTel" placeholder="e.g. 051 401 XXXX"></div>
@@ -184,7 +269,7 @@
 
         <!-- Director Approval -->
         <div class="section">
-          <div class="section-title">7. Approved / Not Approved by Director: LIS</div>
+          <div class="section-title">🎯 7. Approved / Not Approved by Director: LIS</div>
           <div class="row">
             <div class="col">
               <div class="radio-group">
@@ -199,10 +284,25 @@
           </div>
           <div class="row">
             <div class="col">
-              <label>Signature</label>
-              <canvas class="signature-pad" id="sigDirector" width="300" height="100"></canvas>
-              <div class="row no-print" style="margin-top:0.3rem">
-                <button type="button" class="btn btn-outline" onclick="clearSig('sigDirector')">Clear</button>
+              <label>Signature Method</label>
+              <div class="sig-tabs">
+                <div class="sig-tab active" data-target="sig-draw-director">Draw</div>
+                <div class="sig-tab" data-target="sig-upload-director">Upload Image</div>
+                <div class="sig-tab" data-target="sig-skip-director">Digital PDF Later</div>
+              </div>
+              <div id="sig-draw-director" class="sig-panel active">
+                <canvas class="signature-pad" id="canvas-director" width="300" height="100"></canvas>
+                <div class="row no-print" style="margin-top:0.5rem">
+                  <button type="button" class="btn btn-outline" onclick="clearSig('canvas-director')">Clear</button>
+                </div>
+              </div>
+              <div id="sig-upload-director" class="sig-panel">
+                <input type="file" id="sig-upload-director" accept="image/*" style="margin-bottom:0.5rem">
+                <img id="sig-preview-director" class="sig-preview" alt="Signature preview">
+              </div>
+              <div id="sig-skip-director" class="sig-panel">
+                <p style="font-size:0.9rem;color:var(--ufs-accent)">✓ Will be signed in PDF/PeopleSoft workflow.</p>
+                <input type="hidden" id="sig-skip-flag-director" value="true">
               </div>
             </div>
           </div>
@@ -220,14 +320,210 @@
   </div>
 
   <script>
-    // Initialize
+    // Global state
+    const attachments = [];
+    const signatures = { requester: {}, hod: {}, director: {} };
+
     document.addEventListener('DOMContentLoaded', () => {
-      addRow(); // Start with 1 row
-      setupSignatures(['sigRequester', 'sigHOD', 'sigDirector']);
+      addRow();
+      setupSignatureTabs();
+      setupSignatureUploads();
       setupConditionalLogic();
+      setupAttachmentHandlers();
+      
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('reqDate').value = today;
     });
 
-    // Dynamic Item Rows
+    // ========== SIGNATURE TABS ==========
+    function setupSignatureTabs() {
+      document.querySelectorAll('.sig-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.target;
+          const role = target.split('-').pop(); // requester, hod, director
+          
+          // Update tabs
+          tab.parentElement.querySelectorAll('.sig-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          // Update panels
+          tab.parentElement.parentElement.querySelectorAll('.sig-panel').forEach(p => p.classList.remove('active'));
+          document.getElementById(target).classList.add('active');
+          
+          // Reset signature state for this role
+          signatures[role] = { method: target.includes('draw') ? 'draw' : target.includes('upload') ? 'upload' : 'skip', data: null };
+        });
+      });
+    }
+
+    function setupSignatureUploads() {
+      ['requester', 'hod', 'director'].forEach(role => {
+        const uploadInput = document.getElementById(`sig-upload-${role}`);
+        const preview = document.getElementById(`sig-preview-${role}`);
+        
+        if (uploadInput) {
+          uploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+              if (file.size > 2 * 1024 * 1024) {
+                alert('⚠️ Signature image >2MB may cause submission issues. Please use a smaller file.');
+              }
+              const reader = new FileReader();
+              reader.onload = (ev) => {
+                preview.src = ev.target.result;
+                preview.style.display = 'block';
+                signatures[role] = { method: 'upload', data: ev.target.result.split(',')[1] };
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        }
+      });
+    }
+
+    // ========== SIGNATURE CANVAS ==========
+    function setupCanvas(id, role) {
+      const canvas = document.getElementById(id);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#002D62';
+      let drawing = false;
+
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+      }
+
+      function start(e) { drawing = true; ctx.beginPath(); ctx.moveTo(...Object.values(getPos(e))); e.preventDefault(); }
+      function move(e) { if (!drawing) return; ctx.lineTo(...Object.values(getPos(e))); ctx.stroke(); e.preventDefault(); }
+      function end() { 
+        drawing = false; 
+        // Save signature
+        if (canvas.toDataURL('image/png').split(',')[1].length > 100) {
+          signatures[role] = { method: 'draw', data: canvas.toDataURL('image/png').split(',')[1] };
+        }
+      }
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', move);
+      canvas.addEventListener('mouseup', end);
+      canvas.addEventListener('mouseleave', end);
+      canvas.addEventListener('touchstart', start, { passive: false });
+      canvas.addEventListener('touchmove', move, { passive: false });
+      canvas.addEventListener('touchend', end);
+    }
+    
+    // Initialize canvases
+    ['canvas-requester', 'canvas-hod', 'canvas-director'].forEach((id, i) => {
+      setupCanvas(id, ['requester', 'hod', 'director'][i]);
+    });
+
+    function clearSig(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // ========== ATTACHMENTS ==========
+    function setupAttachmentHandlers() {
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      
+      dropZone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+      
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+      function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+      
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+          dropZone.classList.add('dragover');
+          document.getElementById('largeFileWarning').style.display = 'block';
+        }, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => {
+          dropZone.classList.remove('dragover');
+          setTimeout(() => document.getElementById('largeFileWarning').style.display = 'none', 1000);
+        }, false);
+      });
+      
+      dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        handleFiles(dt.files);
+      });
+    }
+
+    function handleFiles(files) {
+      const errorEl = document.getElementById('attachmentError');
+      errorEl.style.display = 'none';
+      
+      for (let file of files) {
+        // Show warning for very large files
+        if (file.size > 25 * 1024 * 1024) {
+          document.getElementById('largeFileWarning').style.display = 'block';
+          document.getElementById('largeFileWarning').textContent = 
+            `⚠️ "${file.name}" is ${formatFileSize(file.size)}. Large files may cause submission issues.`;
+        }
+        addAttachment(file);
+      }
+      renderAttachments();
+    }
+
+    function addAttachment(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        attachments.push({
+          name: file.name,
+          size: formatFileSize(file.size),
+          type: file.type || 'application/octet-stream',
+           e.target.result.split(',')[1]
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAttachment(index) {
+      attachments.splice(index, 1);
+      renderAttachments();
+    }
+
+    function renderAttachments() {
+      const list = document.getElementById('attachmentList');
+      if (attachments.length === 0) {
+        list.innerHTML = '<p style="font-size:0.9rem;color:#6b7280;font-style:italic">No attachments added yet</p>';
+        return;
+      }
+      list.innerHTML = attachments.map((att, i) => `
+        <div class="attachment-item">
+          <div class="attachment-info">
+            <span class="attachment-icon-small">📄</span>
+            <span class="attachment-name" title="${att.name}">${att.name}</span>
+            <span class="attachment-meta">(${att.size})</span>
+          </div>
+          <button type="button" class="attachment-remove no-print" onclick="removeAttachment(${i})" title="Remove">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function formatFileSize(bytes) {
+      if (!bytes) return 'Unknown';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // ========== ITEMS TABLE ==========
     function addRow() {
       const tbody = document.getElementById('itemsBody');
       const idx = tbody.rows.length + 1;
@@ -235,7 +531,7 @@
       tr.innerHTML = `
         <td><input type="text" value="${String(idx).padStart(2,'0')}" readonly style="color:#666"></td>
         <td><input type="text" class="item-desc" required placeholder="e.g. Catering"></td>
-        <td><input type="number" class="item-qty" min="1" value="1" required></td>
+        <td><input type="text" class="item-qty" required placeholder="e.g. 10 people"></td>
         <td><input type="number" class="item-price" min="0" step="0.01" value="0" required></td>
         <td><input type="text" class="item-total" value="0.00" readonly style="font-weight:600"></td>
         <td class="no-print"><button type="button" class="btn btn-outline" style="padding:0.3rem 0.5rem" onclick="removeRow(this)">✕</button></td>
@@ -265,9 +561,11 @@
       const price = tr.querySelector('.item-price');
       const total = tr.querySelector('.item-total');
       const calc = () => {
-        const q = parseFloat(qty.value) || 0;
         const p = parseFloat(price.value) || 0;
-        total.value = (q * p).toFixed(2);
+        const qText = qty.value.toLowerCase();
+        // Extract numeric quantity if present
+        const qtyNum = parseFloat(qText) || 1;
+        total.value = (qtyNum * p).toFixed(2);
         recalcAll();
       };
       qty.addEventListener('input', calc);
@@ -278,47 +576,12 @@
       let grand = 0;
       document.querySelectorAll('.item-total').forEach(el => grand += parseFloat(el.value) || 0);
       document.getElementById('grandTotal').textContent = 'R ' + grand.toFixed(2);
-      
-      // Auto-threshold
       const radios = document.getElementsByName('threshold');
-      if (grand >= 250000) radios[1].checked = true;
-      else radios[0].checked = true;
+      if (grand >= 250000 && radios[1]) radios[1].checked = true;
+      else if (radios[0]) radios[0].checked = true;
     }
 
-    // Signature Pad
-    function setupSignatures(ids) {
-      ids.forEach(id => {
-        const canvas = document.getElementById(id);
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-
-        function getPos(e) {
-          const rect = canvas.getBoundingClientRect();
-          const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-          const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-          return { x, y };
-        }
-
-        function start(e) { drawing = true; ctx.beginPath(); ctx.moveTo(...Object.values(getPos(e))); e.preventDefault(); }
-        function move(e) { if (!drawing) return; ctx.lineTo(...Object.values(getPos(e))); ctx.stroke(); e.preventDefault(); }
-        function end() { drawing = false; }
-
-        canvas.addEventListener('mousedown', start);
-        canvas.addEventListener('mousemove', move);
-        canvas.addEventListener('mouseup', end);
-        canvas.addEventListener('mouseleave', end);
-        canvas.addEventListener('touchstart', start, { passive: false });
-        canvas.addEventListener('touchmove', move, { passive: false });
-        canvas.addEventListener('touchend', end);
-      });
-    }
-
-    function clearSig(id) {
-      const c = document.getElementById(id);
-      c.getContext('2d').clearRect(0, 0, c.width, c.height);
-    }
-
-    // Conditional Logic
+    // ========== CONDITIONAL LOGIC ==========
     function setupConditionalLogic() {
       document.querySelectorAll('input[name="hodStatus"]').forEach(r => r.addEventListener('change', toggleHOD));
       document.querySelectorAll('input[name="dirStatus"]').forEach(r => r.addEventListener('change', toggleDIR));
@@ -332,7 +595,7 @@
       document.getElementById('dirCommentsWrap').style.display = val === 'not_approved' ? 'flex' : 'none';
     }
 
-    // Form Submission & Validation
+    // ========== FORM SUBMISSION ==========
     function submitForm() {
       const form = document.getElementById('procurementForm');
       const required = form.querySelectorAll('[required]');
@@ -353,36 +616,106 @@
         valid = false;
       }
 
+      // Validate at least one signature method selected per role
+      ['requester', 'hod', 'director'].forEach(role => {
+        const activeTab = document.querySelector(`#sig-draw-${role}, #sig-upload-${role}, #sig-skip-${role}`);
+        if (!activeTab?.classList.contains('active')) valid = false;
+      });
+
       if (!valid) {
-        showStatus('Please fill in all required fields.', 'error');
+        showStatus('Please complete all required fields and signature selections.', 'error');
         return;
       }
 
-      // Build Payload
+      // Build PeopleSoft-ready payload
       const payload = {
-        requisitionTitle: document.getElementById('reqTitle').value,
-        entityName: document.getElementById('entityName').value,
-        threshold: document.querySelector('input[name="threshold"]:checked').value,
-        motivation: document.getElementById('motivation').value,
+        formVersion: 'SCM1-v2.2-frontend',
+        submittedAt: new Date().toISOString(),
+        requisition: {
+          title: document.getElementById('reqTitle').value,
+          entityName: document.getElementById('entityName').value,
+          category: 'Goods and Services',
+          threshold: document.querySelector('input[name="threshold"]:checked').value,
+          motivation: document.getElementById('motivation').value
+        },
         items: Array.from(document.querySelectorAll('#itemsBody tr')).map(row => ({
-          desc: row.querySelector('.item-desc').value,
-          qty: row.querySelector('.item-qty').value,
-          price: row.querySelector('.item-price').value,
-          total: row.querySelector('.item-total').value
+          itemNumber: row.querySelector('td:first-child input').value,
+          description: row.querySelector('.item-desc').value,
+          quantity: row.querySelector('.item-qty').value,
+          unitPrice: parseFloat(row.querySelector('.item-price').value) || 0,
+          lineTotal: row.querySelector('.item-total').value
         })),
-        grandTotal: document.getElementById('grandTotal').textContent,
-        comments: document.getElementById('comments').value,
-        requester: { name: document.getElementById('reqName').value, date: document.getElementById('reqDate').value },
-        hod: { status: document.querySelector('input[name="hodStatus"]:checked').value, name: document.getElementById('hodName').value, date: document.getElementById('hodDate').value },
-        budget: { contact: document.getElementById('budgetContact').value, tel: document.getElementById('budgetTel').value, date: document.getElementById('budgetDate').value, available: document.getElementById('budgetAvailable').value, division: document.getElementById('budgetDivision').value, entityNo: document.getElementById('budgetEntityNo').value, entityName: document.getElementById('budgetEntityName').value },
-        director: { status: document.querySelector('input[name="dirStatus"]:checked').value, name: document.getElementById('dirName').value, date: document.getElementById('dirDate').value }
+        financials: {
+          grandTotal: document.getElementById('grandTotal').textContent,
+          budgetConfirmation: {
+            contact: document.getElementById('budgetContact').value,
+            tel: document.getElementById('budgetTel').value,
+            date: document.getElementById('budgetDate').value,
+            availableBudget: document.getElementById('budgetAvailable').value,
+            division: document.getElementById('budgetDivision').value,
+            entityNo: document.getElementById('budgetEntityNo').value,
+            entityName: document.getElementById('budgetEntityName').value
+          }
+        },
+        attachments: attachments.map(att => ({
+          filename: att.name,
+          contentType: att.type,
+          size: att.size,
+           att.data,
+          encoding: 'base64'
+        })),
+        approvals: {
+          requester: {
+            name: document.getElementById('reqName').value,
+            date: document.getElementById('reqDate').value,
+            signature: getSignatureData('requester')
+          },
+          hod: {
+            status: document.querySelector('input[name="hodStatus"]:checked').value,
+            name: document.getElementById('hodName').value,
+            date: document.getElementById('hodDate').value,
+            comments: document.getElementById('hodComments').value,
+            signature: getSignatureData('hod')
+          },
+          director: {
+            status: document.querySelector('input[name="dirStatus"]:checked').value,
+            name: document.getElementById('dirName').value,
+            date: document.getElementById('dirDate').value,
+            comments: document.getElementById('dirComments').value,
+            signature: getSignatureData('director')
+          }
+        },
+        comments: {
+          additional: document.getElementById('comments').value
+        }
       };
 
-      console.log('📤 Payload ready for PeopleSoft/Backend:', payload);
-      showStatus('✅ Form validated successfully. Payload logged to console. Connect to your API endpoint to submit.', 'success');
+      console.log('📦 PeopleSoft-Ready Payload:', JSON.stringify(payload, null, 2));
       
-      // TODO: Replace with actual fetch() to your PeopleSoft REST API
-      // fetch('/api/procurement/scm1', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+      // For frontend-only: download as JSON for manual upload later
+      downloadPayload(payload);
+      
+      showStatus('✅ Form prepared successfully! Payload downloaded. Ready for Apache deployment & PeopleSoft integration.', 'success');
+    }
+
+    function getSignatureData(role) {
+      const sig = signatures[role];
+      if (sig?.method === 'skip') return { method: 'digital_pdf_pending', data: null };
+      if (sig?.method === 'upload' && sig.data) return { method: 'image_upload', data: sig.data, encoding: 'base64' };
+      if (sig?.method === 'draw' && sig.data) return { method: 'canvas_draw', data: sig.data, encoding: 'base64' };
+      return { method: 'none', data: null };
+    }
+
+    function downloadPayload(payload) {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SCM1_${payload.requisition.title.replace(/[^a-z0-9]/gi,'_')}_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     function showStatus(msg, type) {
@@ -390,7 +723,7 @@
       el.textContent = msg;
       el.className = `status-msg status-${type}`;
       el.style.display = 'block';
-      setTimeout(() => el.style.display = 'none', 5000);
+      setTimeout(() => el.style.display = 'none', 8000);
     }
   </script>
 </body>
