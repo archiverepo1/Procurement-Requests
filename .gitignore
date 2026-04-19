@@ -1,0 +1,38 @@
+# ==========================
+# Operating System Files
+# ==========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================
+# Editor / IDE Configs
+# ==========================
+.vscode/
+.idea/
+*.swp
+*~
+
+# ==========================
+# Server & Production Configs
+# ==========================
+# Ignore actual config files; only the .example templates should be versioned
+deploy/*.conf
+deploy/*.key
+deploy/*.crt
+deploy/*.pem
+deploy/ssl/
+
+# ==========================
+# Logs & Temporary Files
+# ==========================
+*.log
+*.tmp
+*.cache
+
+# ==========================
+# Dependencies (if you add a backend later)
+# ==========================
+node_modules/
+vendor/
+.env
