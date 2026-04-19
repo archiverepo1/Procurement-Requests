@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCM 1 - Request to Procure | UFS LIS</title>
+  <style>
+    :root {
+      --ufs-primary: #002D62;
+      --ufs-secondary: #FFB81C;
+      --ufs-accent: #0055A4;
+      --ufs-light: #F4F6F8;
+      --ufs-border: #D1D5DB;
+      --ufs-error: #DC2626;
+      --ufs-success: #16A34A;
+      --text-main: #1F2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--ufs-light); color: var(--text-main); line-height: 1.5; }
+    .container { max-width: 960px; margin: 2rem auto; background: #fff; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); overflow: hidden; }
+    .header { background: linear-gradient(135deg, var(--ufs-primary) 0%, var(--ufs-accent) 100%); color: #fff; padding: 1.5rem 2rem; text-align: center; }
+    .header h1 { font-size: 1.8rem; margin-bottom: 0.3rem; font-weight: 700; }
+    .header p { opacity: 0.9; font-size: 0.95rem; }
+    .form-body { padding: 2rem; }
+    .section { margin-bottom: 1.8rem; }
+    .section-title { font-size: 1.1rem; font-weight: 600; color: var(--ufs-primary); border-bottom: 2px solid var(--ufs-secondary); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+    .col { flex: 1; min-width: 220px; }
+    label { display: block; font-weight: 500; margin-bottom: 0.3rem; font-size: 0.9rem; }
+    input, textarea, select { width: 100%; padding: 0.6rem; border: 1px solid var(--ufs-border); border-radius: 5px; font-size: 0.95rem; transition: all 0.2s; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ufs-primary); box-shadow: 0 0 0 3px rgba(0,45,98,0.15); }
+    .radio-group { display: flex; gap: 1.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
+    .radio-group label { font-weight: normal; display: flex; align-items: center; gap: 0.4rem; cursor: pointer; background: #f9fafb; padding: 0.4rem 0.6rem; border-radius: 4px; }
+    .item-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.9rem; }
+    .item-table th, .item-table td { border: 1px solid var(--ufs-border); padding: 0.6rem; text-align: left; }
+    .item-table th { background: var(--ufs-light); font-weight: 600; }
+    .item-table input { border: none; background: transparent; padding: 0.3rem; width: 100%; }
+    .item-table input:focus { box-shadow: none; border-bottom: 2px solid var(--ufs-primary); }
+    .total-row { font-weight: 700; background: #eef2f6; }
+    .signature-pad { border: 1px solid var(--ufs-border); border-radius: 4px; background: #fafafa; touch-action: none; cursor: crosshair; }
+    .btn { padding: 0.65rem 1.2rem; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 0.9rem; }
+    .btn-primary { background: var(--ufs-primary); color: #fff; }
+    .btn-primary:hover { background: #001a3a; transform: translateY(-1px); }
+    .btn-secondary { background: var(--ufs-secondary); color: var(--ufs-primary); font-weight: 600; }
+    .btn-secondary:hover { background: #e6a517; }
+    .btn-outline { background: transparent; border: 1px solid var(--ufs-border); color: var(--text-main); }
+    .btn-outline:hover { border-color: var(--ufs-primary); color: var(--ufs-primary); }
+    .actions { display: flex; gap: 0.8rem; margin-top: 2rem; justify-content: flex-end; flex-wrap: wrap; }
+    .error { color: var(--ufs-error); font-size: 0.78rem; margin-top: 0.2rem; display: none; }
+    .input-error { border-color: var(--ufs-error) !important; }
+    .status-msg { padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem; display: none; font-size: 0.9rem; }
+    .status-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .status-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      .container { box-shadow: none; margin: 0; }
+      input, textarea, select { border: none; background: transparent; padding: 0; }
+      .signature-pad { border: 1px dashed #999; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>LIBRARY AND INFORMATION SERVICES</h1>
+      <p>SCM 1 - REQUEST TO PROCURE | UFS</p>
+    </header>
+    <div class="form-body">
+      <div id="statusMsg" class="status-msg"></div>
+      <form id="procurementForm" novalidate>
+        <!-- Requisition Details -->
+        <div class="section">
+          <div class="section-title">Requisition Details</div>
+          <div class="row">
+            <div class="col"><label for="reqTitle">Requisition Title *</label><input type="text" id="reqTitle" required></div>
+            <div class="col"><label for="entityName">Entity Name *</label><input type="text" id="entityName" required></div>
+          </div>
+          <div class="row">
+            <div class="col"><label>Category</label><input type="text" value="Goods and Services" readonly style="background:#f9fafb"></div>
+            <div class="col">
+              <label>Value Threshold *</label>
+              <div class="radio-group">
+                <label><input type="radio" name="threshold" value="below_250k" required> Below R 250 000</label>
+                <label><input type="radio" name="threshold" value="above_250k"> R 250 000 and above</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"><label for="motivation">1.1 Motivation for procurement *</label><textarea id="motivation" rows="3" required></textarea></div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="section">
+          <div class="section-title">1.2 Description of Goods/Services</div>
+          <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.5rem">Note: This form must be accompanied by a clear written specification.</p>
+          <table class="item-table" id="itemsTable">
+            <thead>
+              <tr><th style="width:10%">Item No</th><th>Description *</th><th style="width:12%">Qty</th><th style="width:18%">Unit Price (R)</th><th style="width:18%">Line Total (R)</th><th class="no-print" style="width:8%"></th></tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td colspan="4" style="text-align:right">Grand Total</td>
+                <td id="grandTotal">R 0.00</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+          <button type="button" class="btn btn-secondary no-print" onclick="addRow()">+ Add Item</button>
+        </div>
+
+        <!-- Additional Comments -->
+        <div class="section">
+          <div class="section-title">2. Additional Comments</div>
+          <textarea id="comments" rows="2" placeholder="Optional"></textarea>
+        </div>
+
+        <!-- Requested By -->
+        <div class="section">
+          <div class="section-title">3. Requested By</div>
+          <div class="row">
+            <div class="col"><label>Name & Surname *</label><input type="text" id="reqName" required></div>
+            <div class="col"><label>Date *</label><input type="date" id="reqDate" required></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Signature *</label>
+              <canvas class="signature-pad" id="sigRequester" width="300" height="100"></canvas>
+              <div class="row no-print" style="margin-top:0.3rem">
+                <button type="button" class="btn btn-outline" onclick="clearSig('sigRequester')">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOD Approval -->
+        <div class="section">
+          <div class="section-title">4. Supported / Not Supported by Head of Division</div>
+          <div class="row">
+            <div class="col">
+              <div class="radio-group">
+                <label><input type="radio" name="hodStatus" value="supported" required> Supported</label>
+                <label><input type="radio" name="hodStatus" value="not_supported"> Not Supported</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"><label>HOD Name</label><input type="text" id="hodName"></div>
+            <div class="col"><label>Date</label><input type="date" id="hodDate"></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Signature</label>
+              <canvas class="signature-pad" id="sigHOD" width="300" height="100"></canvas>
+              <div class="row no-print" style="margin-top:0.3rem">
+                <button type="button" class="btn btn-outline" onclick="clearSig('sigHOD')">Clear</button>
+              </div>
+            </div>
+          </div>
+          <div id="hodCommentsWrap" class="row" style="display:none">
+            <div class="col"><label for="hodComments">5. Comments (If Not Supported)</label><textarea id="hodComments" rows="2"></textarea></div>
+          </div>
+        </div>
+
+        <!-- Budget Confirmation -->
+        <div class="section">
+          <div class="section-title">6. Budget Confirmation (LIS Finance & Administration)</div>
+          <div class="row">
+            <div class="col"><label>Contact Name</label><input type="text" id="budgetContact"></div>
+            <div class="col"><label>Tel No</label><input type="tel" id="budgetTel" placeholder="e.g. 051 401 XXXX"></div>
+          </div>
+          <div class="row">
+            <div class="col"><label>Confirmation Date</label><input type="date" id="budgetDate"></div>
+            <div class="col"><label>Available Budget to Date (R)</label><input type="number" id="budgetAvailable" step="0.01"></div>
+          </div>
+          <div class="row">
+            <div class="col"><label>Division</label><input type="text" id="budgetDivision"></div>
+            <div class="col"><label>Entity No</label><input type="text" id="budgetEntityNo"></div>
+            <div class="col"><label>Entity Name</label><input type="text" id="budgetEntityName"></div>
+          </div>
+        </div>
+
+        <!-- Director Approval -->
+        <div class="section">
+          <div class="section-title">7. Approved / Not Approved by Director: LIS</div>
+          <div class="row">
+            <div class="col">
+              <div class="radio-group">
+                <label><input type="radio" name="dirStatus" value="approved" required> Approved</label>
+                <label><input type="radio" name="dirStatus" value="not_approved"> Not Approved</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col"><label>Director Name</label><input type="text" id="dirName"></div>
+            <div class="col"><label>Date</label><input type="date" id="dirDate"></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Signature</label>
+              <canvas class="signature-pad" id="sigDirector" width="300" height="100"></canvas>
+              <div class="row no-print" style="margin-top:0.3rem">
+                <button type="button" class="btn btn-outline" onclick="clearSig('sigDirector')">Clear</button>
+              </div>
+            </div>
+          </div>
+          <div id="dirCommentsWrap" class="row" style="display:none">
+            <div class="col"><label for="dirComments">8. Comments (If Not Approved)</label><textarea id="dirComments" rows="2"></textarea></div>
+          </div>
+        </div>
+
+        <div class="actions no-print">
+          <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print / Save PDF</button>
+          <button type="button" class="btn btn-primary" onclick="submitForm()">📤 Submit for Processing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      addRow(); // Start with 1 row
+      setupSignatures(['sigRequester', 'sigHOD', 'sigDirector']);
+      setupConditionalLogic();
+    });
+
+    // Dynamic Item Rows
+    function addRow() {
+      const tbody = document.getElementById('itemsBody');
+      const idx = tbody.rows.length + 1;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" value="${String(idx).padStart(2,'0')}" readonly style="color:#666"></td>
+        <td><input type="text" class="item-desc" required placeholder="e.g. Catering"></td>
+        <td><input type="number" class="item-qty" min="1" value="1" required></td>
+        <td><input type="number" class="item-price" min="0" step="0.01" value="0" required></td>
+        <td><input type="text" class="item-total" value="0.00" readonly style="font-weight:600"></td>
+        <td class="no-print"><button type="button" class="btn btn-outline" style="padding:0.3rem 0.5rem" onclick="removeRow(this)">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+      attachCalcEvents(tr);
+      recalcAll();
+    }
+
+    function removeRow(btn) {
+      const tbody = document.getElementById('itemsBody');
+      if (tbody.rows.length > 1) {
+        btn.closest('tr').remove();
+        recalcAll();
+        renumberRows();
+      }
+    }
+
+    function renumberRows() {
+      document.querySelectorAll('#itemsBody tr').forEach((row, i) => {
+        row.querySelector('td:first-child input').value = String(i + 1).padStart(2, '0');
+      });
+    }
+
+    function attachCalcEvents(tr) {
+      const qty = tr.querySelector('.item-qty');
+      const price = tr.querySelector('.item-price');
+      const total = tr.querySelector('.item-total');
+      const calc = () => {
+        const q = parseFloat(qty.value) || 0;
+        const p = parseFloat(price.value) || 0;
+        total.value = (q * p).toFixed(2);
+        recalcAll();
+      };
+      qty.addEventListener('input', calc);
+      price.addEventListener('input', calc);
+    }
+
+    function recalcAll() {
+      let grand = 0;
+      document.querySelectorAll('.item-total').forEach(el => grand += parseFloat(el.value) || 0);
+      document.getElementById('grandTotal').textContent = 'R ' + grand.toFixed(2);
+      
+      // Auto-threshold
+      const radios = document.getElementsByName('threshold');
+      if (grand >= 250000) radios[1].checked = true;
+      else radios[0].checked = true;
+    }
+
+    // Signature Pad
+    function setupSignatures(ids) {
+      ids.forEach(id => {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        function getPos(e) {
+          const rect = canvas.getBoundingClientRect();
+          const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+          const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+          return { x, y };
+        }
+
+        function start(e) { drawing = true; ctx.beginPath(); ctx.moveTo(...Object.values(getPos(e))); e.preventDefault(); }
+        function move(e) { if (!drawing) return; ctx.lineTo(...Object.values(getPos(e))); ctx.stroke(); e.preventDefault(); }
+        function end() { drawing = false; }
+
+        canvas.addEventListener('mousedown', start);
+        canvas.addEventListener('mousemove', move);
+        canvas.addEventListener('mouseup', end);
+        canvas.addEventListener('mouseleave', end);
+        canvas.addEventListener('touchstart', start, { passive: false });
+        canvas.addEventListener('touchmove', move, { passive: false });
+        canvas.addEventListener('touchend', end);
+      });
+    }
+
+    function clearSig(id) {
+      const c = document.getElementById(id);
+      c.getContext('2d').clearRect(0, 0, c.width, c.height);
+    }
+
+    // Conditional Logic
+    function setupConditionalLogic() {
+      document.querySelectorAll('input[name="hodStatus"]').forEach(r => r.addEventListener('change', toggleHOD));
+      document.querySelectorAll('input[name="dirStatus"]').forEach(r => r.addEventListener('change', toggleDIR));
+    }
+    function toggleHOD() {
+      const val = document.querySelector('input[name="hodStatus"]:checked')?.value;
+      document.getElementById('hodCommentsWrap').style.display = val === 'not_supported' ? 'flex' : 'none';
+    }
+    function toggleDIR() {
+      const val = document.querySelector('input[name="dirStatus"]:checked')?.value;
+      document.getElementById('dirCommentsWrap').style.display = val === 'not_approved' ? 'flex' : 'none';
+    }
+
+    // Form Submission & Validation
+    function submitForm() {
+      const form = document.getElementById('procurementForm');
+      const required = form.querySelectorAll('[required]');
+      let valid = true;
+
+      required.forEach(el => {
+        if (!el.value && el.type !== 'radio') {
+          el.classList.add('input-error');
+          valid = false;
+        } else {
+          el.classList.remove('input-error');
+        }
+      });
+
+      if (!document.querySelector('input[name="threshold"]:checked') || 
+          !document.querySelector('input[name="hodStatus"]:checked') ||
+          !document.querySelector('input[name="dirStatus"]:checked')) {
+        valid = false;
+      }
+
+      if (!valid) {
+        showStatus('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      // Build Payload
+      const payload = {
+        requisitionTitle: document.getElementById('reqTitle').value,
+        entityName: document.getElementById('entityName').value,
+        threshold: document.querySelector('input[name="threshold"]:checked').value,
+        motivation: document.getElementById('motivation').value,
+        items: Array.from(document.querySelectorAll('#itemsBody tr')).map(row => ({
+          desc: row.querySelector('.item-desc').value,
+          qty: row.querySelector('.item-qty').value,
+          price: row.querySelector('.item-price').value,
+          total: row.querySelector('.item-total').value
+        })),
+        grandTotal: document.getElementById('grandTotal').textContent,
+        comments: document.getElementById('comments').value,
+        requester: { name: document.getElementById('reqName').value, date: document.getElementById('reqDate').value },
+        hod: { status: document.querySelector('input[name="hodStatus"]:checked').value, name: document.getElementById('hodName').value, date: document.getElementById('hodDate').value },
+        budget: { contact: document.getElementById('budgetContact').value, tel: document.getElementById('budgetTel').value, date: document.getElementById('budgetDate').value, available: document.getElementById('budgetAvailable').value, division: document.getElementById('budgetDivision').value, entityNo: document.getElementById('budgetEntityNo').value, entityName: document.getElementById('budgetEntityName').value },
+        director: { status: document.querySelector('input[name="dirStatus"]:checked').value, name: document.getElementById('dirName').value, date: document.getElementById('dirDate').value }
+      };
+
+      console.log('📤 Payload ready for PeopleSoft/Backend:', payload);
+      showStatus('✅ Form validated successfully. Payload logged to console. Connect to your API endpoint to submit.', 'success');
+      
+      // TODO: Replace with actual fetch() to your PeopleSoft REST API
+      // fetch('/api/procurement/scm1', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+    }
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = `status-msg status-${type}`;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 5000);
+    }
+  </script>
+</body>
+</html>
